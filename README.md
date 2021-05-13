@@ -1,7 +1,7 @@
-#API - CHALLENGE
+# API - CHALLENGE
 
 
-##Description
+## Description
 
 A simple API using Node.js, Express, MySQL, and Redis that allows you to create, list, and delete comment data. 
 
