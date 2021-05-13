@@ -14,4 +14,5 @@ The table in the MySQL database stores anonymous author's comments in a column f
 
 * From your terminal window, `npm install` to install the dependencies.
 * There is a very simple seed file `seed.js` that you can populate your database with by running the command `node seed.js`
+* Start the server with `npm run dev` 
 * You should be able to make GET, POST, and DELETE requests to the `localhost:5000/comments` endpoint and see the changes reflected in your data
