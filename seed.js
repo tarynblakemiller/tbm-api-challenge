@@ -1,10 +1,4 @@
 const mysql = require("mysql2");
-module.exports.comments = [
-  { content: "blah" },
-  { content: "bleh" },
-  { content: "yo" },
-  { content: "fml" },
-];
 
 const db = mysql.createConnection({
   host: "localhost",

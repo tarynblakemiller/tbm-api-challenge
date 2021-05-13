@@ -1,8 +1,10 @@
 const express = require("express");
-const app = express();
 const bodyParser = require("body-parser");
+const app = express();
 const PORT = 5000;
+
 const mysql = require("mysql2");
+
 const redis = require("redis");
 const redisPort = 6379;
 const client = redis.createClient(redisPort);
@@ -12,28 +14,11 @@ client.on("error", (err) => {
 });
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(bodyParser());
-
-app.get("/comments/:id", (req, res) => {
-  const commentId = req.params.id;
-  try {
-    db.query(
-      "SELECT FROM commentdata WHERE commentdata.id = ?",
-      [commentId]
-      (err, rows, fields) => {
-        console.log("I think we fetched comments successfully");
-        res.json(rows);
-      }
-    );
-  } catch (err) {
-    return res.status(500).send(err);
-  }
-});
+app.use(bodyParser.json());
 
 app.get("/", (req, res) => {
-  console.log("Responding to root route");
   res.send("Hello!");
 });
 
@@ -49,8 +34,8 @@ app.get("/comments", (req, res) => {
         });
       } else {
         db.query("SELECT * FROM commentdata", (err, rows, fields) => {
-          console.log("I think we fetched comments successfully");
           client.set("comments", JSON.stringify(rows));
+          client.expire("comments", 60);
           res.status(200).json(rows);
         });
       }
@@ -79,7 +64,7 @@ app.post("/comments", (req, res, next) => {
       function (err, result) {
         if (err) throw err;
 
-        console.log("1 record inserted");
+        console.log("1 record inserted into the database");
       }
     );
   } catch (error) {
